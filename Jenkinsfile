@@ -4,6 +4,8 @@ node {
         url: 'https://github.com/Treshch1/api_automation.git'
     }
     stage("Install dependencies"){
-        sh 'pyenv activate api_automation'
+            withPythonEnv('api_automation') {
+                sh 'pip install ipdb'
+        }
     }
 }
