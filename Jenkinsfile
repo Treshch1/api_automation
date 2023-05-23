@@ -1,7 +1,6 @@
 pipeline {
     agent any
     environment {
-        BASE_URL = 'https://staging.icans.ai/api/v1'
         USER_EMAIL = credentials('user_email')
         USER_PASSWORD = credentials('user_password')
     }
@@ -20,9 +19,12 @@ pipeline {
                 }
             }
         }
-        stage("Override environmental variables"){
+        stage("Set environmental variables"){
             steps {
-                sh 'export BASE_URL=${params.BASE_URL_PARAM}'
+                script {
+                    env.BASE_URL = "${params.BASE_URL_PARAM}"
+                }
+                sh "echo $BASE_URL"
             }
         }
         stage("Checkout repo"){
@@ -40,9 +42,10 @@ pipeline {
         }
         stage("Run tests"){
             steps {
+                sh "echo $BASE_URL"
                 withPythonEnv('/Users/treshch/.pyenv/versions/api_automation/bin/') {
-                sh 'pytest'
-            }
+                    sh 'pytest'
+                }
             }
         }
     }
