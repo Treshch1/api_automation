@@ -2,10 +2,29 @@ pipeline {
     agent any
     environment {
         BASE_URL = 'https://staging.icans.ai/api/v1'
-        USER_EMAIL = 'vladislavtreshcheyko+owner@gmail.com'
-        USER_PASSWORD = 'Qqwe1123'
+        USER_EMAIL = credentials('user_email')
+        USER_PASSWORD = credentials('user_password')
     }
     stages {
+        stage('Setup parameters') {
+            steps {
+                script {
+                    properties([
+                        parameters([
+                            choice(
+                                choices: ['https://staging.icans.ai/api/v1', 'https://www.google.com/search'],
+                                name: 'BASE_URL_PARAM'
+                            ),
+                        ])
+                    ])
+                }
+            }
+        }
+        stage("Checkout repo"){
+            steps {
+                echo params.BASE_URL_PARAM
+            }
+        }
         stage("Checkout repo"){
             steps {
                 git branch: 'main',
