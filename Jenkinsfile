@@ -14,13 +14,13 @@ pipeline {
                             choice(
                                 choices: ['https://staging.icans.ai/api/v1', 'https://www.google.com/search'],
                                 name: 'BASE_URL_PARAM'
-                            ),
+                            )
                         ])
                     ])
                 }
             }
         }
-        stage("Checkout repo"){
+        stage("Check parameters"){
             steps {
                 echo params.BASE_URL_PARAM
             }
