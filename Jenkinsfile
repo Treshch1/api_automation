@@ -1,4 +1,5 @@
 pipeline {
+    agent any
     environment {
         BASE_URL = 'https://staging.icans.ai/api/v1'
         USER_EMAIL = 'vladislavtreshcheyko+owner@gmail.com'
