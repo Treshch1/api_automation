@@ -20,9 +20,9 @@ pipeline {
                 }
             }
         }
-        stage("Check parameters"){
+        stage("Override environmental variables"){
             steps {
-                echo params.BASE_URL_PARAM
+                sh 'export BASE_URL=${params.BASE_URL_PARAM}'
             }
         }
         stage("Checkout repo"){
