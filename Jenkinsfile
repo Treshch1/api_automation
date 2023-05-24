@@ -55,7 +55,9 @@ pipeline {
         }
         stage("Run tests"){
             steps {
-                sh "pipenv run pytest tests -sv --alluredir=allure_results"
+                catchError {
+                    sh "pipenv run pytest tests -sv --alluredir=allure_results"
+                }
             }
         }
         stage("Report") {
