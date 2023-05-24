@@ -24,7 +24,6 @@ pipeline {
                 script {
                     env.BASE_URL = "${params.BASE_URL_PARAM}"
                 }
-                sh "echo $BASE_URL"
             }
         }
         stage("Checkout repo"){
@@ -33,19 +32,30 @@ pipeline {
                 url: 'https://github.com/Treshch1/api_automation.git'
             }
         }
+//      Pyenv implementation
+//         stage("Install dependencies"){
+//             steps {
+//                 withPythonEnv('/Users/treshch/.pyenv/versions/api_automation/bin/') {
+//                     sh 'pip install -r requirements.txt'
+//                 }
+//             }
+//         }
+//         stage("Run tests"){
+//             steps {
+//                 withPythonEnv('/Users/treshch/.pyenv/versions/api_automation/bin/') {
+//                     sh 'pytest'
+//                 }
+//             }
+//         }
+//      Pipenv implementation
         stage("Install dependencies"){
             steps {
-                withPythonEnv('/Users/treshch/.pyenv/versions/api_automation/bin/') {
-                    sh 'pip install -r requirements.txt'
-                }
+                sh "pipenv install"
             }
         }
         stage("Run tests"){
             steps {
-                sh "echo $BASE_URL"
-                withPythonEnv('/Users/treshch/.pyenv/versions/api_automation/bin/') {
-                    sh 'pytest'
-                }
+                sh "pipenv run pytest tests -sv --alluredir=allure_results"
             }
         }
     }
