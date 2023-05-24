@@ -58,5 +58,18 @@ pipeline {
                 sh "pipenv run pytest tests -sv --alluredir=allure_results"
             }
         }
+        stage("Report") {
+            steps {
+                script {
+                    allure([
+                        includeProperties: false,
+                        jdk: '',
+                        properties: [],
+                        reportBuildPolicy: 'ALWAYS',
+                        results: [[path: 'allure_results']]
+                    ])
+                }
+            }
+        }
     }
 }
